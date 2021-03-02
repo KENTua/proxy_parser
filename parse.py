@@ -16,10 +16,10 @@ VERSION = '0.9'
 
 try:
   versionHtml = get('https://raw.githubusercontent.com/KENTua/proxy-parser/main/parse.py').text
-  latest = findall(r'$VERSION = \'(*.)\'^', versionHtml)
-  if VERSION != latest:
+  latest = findall(r'VERSION = \'(.*)\'', versionHtml)
+  if VERSION != latest[0]:
     print(Fore.RED+'New version avaible! -> '+Fore.BLUE+'https://github.com/KENTua/proxy-parser')
-except:
+except Exception as e:
   pass
 
 # UserAgent().update()  # update user agents
