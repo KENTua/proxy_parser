@@ -11,6 +11,8 @@ import json
 from  modules import *
 from multiprocessing.dummy import Pool
 
+from modules import genode
+
 init(autoreset=True)
 VERSION = '0.9'
 
@@ -43,14 +45,21 @@ except:
 
 def main(url):
   global parsed
-  headers = {'user-agent': UserAgent().random, 'accept-encoding': 'gzip, deflate, br'}
   urlClear = url.replace('https://', '').replace('http://', '').replace('www.', '').split('/')[0]
+  if urlClear == 'hidester.com':
+    headers = {'user-agent': UserAgent().random, 'accept-encoding': 'gzip, deflate, br','Referer': 'https://hidester.com/proxylist/'}
+  else:
+    headers = {'user-agent': UserAgent().random, 'accept-encoding': 'gzip, deflate, br'}
   try:
     html = get(url, headers=headers).text
     soup = bs(html, 'lxml')
     htmlText = soup.find('body').get_text()
     if urlClear == 'api.foxtools.ru':
       parsedRaw = foxtools.parse(htmlText)
+    elif urlClear == 'proxylist.geonode.com':
+      parsedRaw = genode.parse(htmlText)
+    elif urlClear == 'hidester.com':
+      parsedRaw = hidester.parse(htmlText)
     else:
       parsedRaw = others.parse(htmlText)
     if len(parsedRaw) == 0:
