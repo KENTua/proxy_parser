@@ -1,3 +1,4 @@
+https://api.proxyscrape.com/?request=getproxies&country=all&ssl=all&anonymity=all
 https://free-proxy-list.net
 https://www.us-proxy.org
 https://www.socks-proxy.net
@@ -33,7 +34,6 @@ https://www.my-proxy.com/free-proxy-list-3.html
 https://www.my-proxy.com/free-proxy-list-4.html
 https://free-proxy-list.net/anonymous-proxy.html
 https://www.my-proxy.com/free-proxy-list-5.html
-http://vectroproxy.com/pages/list-http.php
 https://www.my-proxy.com/free-proxy-list-6.html
 http://aliveproxy.com/proxy-list/proxies.aspx/Russian_Federation-ru
 http://spys.one
