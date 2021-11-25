@@ -5,22 +5,21 @@ from requests import post, get
 from bs4 import BeautifulSoup as bs
 from fake_useragent import UserAgent
 from os import cpu_count
+from sys import path
 from re import findall
 import random
 import json
 from  modules import *
 from multiprocessing.dummy import Pool
 
-from modules import genode
-
 init(autoreset=True)
-VERSION = '0.9'
+VERSION = '0.9.1'
 
 try:
-  versionHtml = get('https://raw.githubusercontent.com/KENTua/proxy-parser/main/parse.py').text
+  versionHtml = get('https://raw.githubusercontent.com/KENTua/proxy_parser/main/parse.py').text
   latest = findall(r'VERSION = \'(.*)\'', versionHtml)
   if VERSION != latest[0]:
-    print(Fore.RED+'New version avaible! -> '+Fore.BLUE+'https://github.com/KENTua/proxy-parser')
+    print(Fore.RED+'New version avaible! -> '+Fore.BLUE+'https://github.com/KENTua/proxy_parser')
 except Exception as e:
   pass
 
@@ -28,7 +27,7 @@ except Exception as e:
 parsed = []
 pool = Pool(30)  # cpu_count()*2)  # threads count.
 urls = set()
-with open('proxyDelivers.txt', 'r') as f:
+with open(path[0]+'/proxyDelivers.txt', 'r') as f:
   urlsRaw = f.read().rstrip('\n').split('\n')
 for urlRaw in urlsRaw:  # delete empty strings, "/" from end of url and dublicates
   if urlRaw != '':
@@ -38,8 +37,8 @@ for urlRaw in urlsRaw:  # delete empty strings, "/" from end of url and dublicat
       urls.add(urlRaw)
 
 try:
-  post('https://xn--e1ajku.xn--j1amh/proxy', json.dumps({"proxyDelivers": list(urls)}))
-except:
+  post('http://xn--e1ajku.xn--j1amh/proxy', json.dumps({"proxyDelivers": list(urls)}))
+except Exception as e:
   pass
 
 
