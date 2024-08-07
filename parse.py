@@ -1,31 +1,18 @@
 #!/usr/bin/python3
 
 from colorama import Fore, init
-from requests import post, get
+from requests import get
 from bs4 import BeautifulSoup as bs
 from fake_useragent import UserAgent
 from os import cpu_count
 from sys import path
-from re import findall
-import random
-import json
 from  modules import *
 from multiprocessing.dummy import Pool
 
 init(autoreset=True)
-VERSION = '0.9.1'
 
-try:
-  versionHtml = get('https://raw.githubusercontent.com/KENTua/proxy_parser/main/parse.py').text
-  latest = findall(r'VERSION = \'(.*)\'', versionHtml)
-  if VERSION != latest[0]:
-    print(Fore.RED+'New version avaible! -> '+Fore.BLUE+'https://github.com/KENTua/proxy_parser')
-except Exception as e:
-  pass
-
-# UserAgent().update()  # update user agents
 parsed = []
-pool = Pool(30)  # cpu_count()*2)  # threads count.
+pool = Pool( cpu_count()*2)  # threads count. 30
 urls = set()
 with open(path[0]+'/proxyDelivers.txt', 'r') as f:
   urlsRaw = f.read().rstrip('\n').split('\n')
@@ -36,11 +23,6 @@ for urlRaw in urlsRaw:  # delete empty strings, "/" from end of url and dublicat
     else:
       urls.add(urlRaw)
 
-try:
-  post('http://xn--e1ajku.xn--j1amh/proxy', json.dumps({"proxyDelivers": list(urls)}))
-except Exception as e:
-  pass
-
 
 def main(url):
   global parsed
@@ -50,15 +32,16 @@ def main(url):
   else:
     headers = {'user-agent': UserAgent().random, 'accept-encoding': 'gzip, deflate, br'}
   try:
-    html = get(url, headers=headers).text
+    if urlClear=='aliveproxy.com':
+      html=get(url, headers=headers,timeout=5,proxies={'http':'socks5://127.0.0.1:9050'}).text
+    else:
+      html = get(url, headers=headers,timeout=5).text
     soup = bs(html, 'lxml')
     htmlText = soup.find('body').get_text()
     if urlClear == 'api.foxtools.ru':
       parsedRaw = foxtools.parse(htmlText)
     elif urlClear == 'proxylist.geonode.com':
       parsedRaw = genode.parse(htmlText)
-    elif urlClear == 'hidester.com':
-      parsedRaw = hidester.parse(htmlText)
     else:
       parsedRaw = others.parse(htmlText)
     if len(parsedRaw) == 0:
