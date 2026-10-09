@@ -35,3 +35,4 @@ https://www.my-proxy.com/free-proxy-list-9.html
 https://www.ip-adress.com/proxy-list
 https://www.my-proxy.com/free-proxy-list-10.html
 https://www.my-proxy.com/free-anonymous-proxy.html
+https://rcloak.com/api/proxies/raw?protocol=all
